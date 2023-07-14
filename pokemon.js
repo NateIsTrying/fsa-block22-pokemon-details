@@ -56,6 +56,12 @@ const singlePokeDetails = (data,number) => {
     h2.innerText = `#${number}: ${data.name}`;
     content.appendChild(h2);
 
+    // setup pixel background
+    const bgImg = document.createElement('img');
+    content.appendChild(bgImg);
+    bgImg.setAttribute('id','background');
+    bgImg.setAttribute('src','./pokemon-sprite-single-bgs/kWharevers-pokemon-grassy-bg.png');
+
     const img = document.createElement('img');
     const pokeSprite = data.sprites.front_default;
     img.setAttribute('src', pokeSprite);
@@ -68,6 +74,7 @@ const singlePokeDetails = (data,number) => {
     const typeFinal = typeArr.join()
     const typeH3 = document.createElement('h3');
     content.appendChild(typeH3);
+    typeH3.setAttribute('id', 'typeH3');
     typeH3.innerText = `Type: ${typeFinal}`;
 
     // add unique abilities from abilities array
@@ -78,8 +85,11 @@ const singlePokeDetails = (data,number) => {
     const abilityFinal = abilityArr.join()
     const abilityH3 = document.createElement('h3');
     content.appendChild(abilityH3);
-    abilityH3.innerText = `Abilities: ${abilityFinal}`
+    abilityH3.setAttribute('id', 'abilityH3');
+    abilityH3.innerText = `Abilities: ${abilityFinal}`;
 }
+
+
 
 const backButtonEvents = () =>{
     const backButton = document.createElement('button');
