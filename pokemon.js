@@ -1,14 +1,10 @@
-const body = document.querySelector(`h1`);
-const ul = document.querySelector('ul');
-// const globalPokeArr = [];
 
 // retreive all pokemon
 const retrievePokemon = async() => {
     try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon`);
         const pokeData = await response.json();
-        const pokeResults = pokeData.results;
-        printPokeItems(pokeResults);
+        return pokeData.results;
 
     } catch (error) {
         console.log('Something went wrong.', error);
@@ -16,47 +12,45 @@ const retrievePokemon = async() => {
     
 }
 
+
+
 // render all pokemon
-const printPokeItems = async(data) => {
-    for(let i = 0; i < data.length; i++){
-        const li = document.createElement('li');
-        ul.appendChild(li);
-        li.innerHTML = `<a>${data[i].name}</a>`;
-        // globalPokeArr.push(data[i].name);
-        pokeClick();
-    }
-    // console.log(globalPokeArr);
+const pokeRender = (pokeArray) => {
+    const pokeLis = pokeArray.map((singlePokemon) =>{
+        const urlSplit = singlePokemon.url.split(`/`);
+        const pokeId = urlSplit[6];
+        return `<li><a data-number='${pokeId}'>${singlePokemon.name}</a></li>`;}).join(``);
+
+    const ul = document.querySelector('ul');
+    ul.innerHTML = pokeLis;
 }
 
-retrievePokemon();
+
 
 // have eventListener
 const pokeClick = () => { 
     const pokeLinks = document.querySelectorAll('a');
-    // console.log(pokeLinks);
-    for(let j = 0; j < pokeLinks.length; j++){
-        let pokeLink = pokeLinks[j];
+    // console.log(pokeLinks.length);
+    for(let i = 0; i < pokeLinks.length; i++){
+        let pokeLink = pokeLinks[i];
         // when clicked retrieve single pokemon
-        pokeLink.addEventListener('click',async(event) => {
+        pokeLink.addEventListener('click', async(event) => {
             event.preventDefault();
-            let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${j+1}/`);
-            const pokeData = await response.json();
-            // console.log(pokeData.name);
-            const h1 = document.querySelector('h1');
+            const pokeNumber = pokeLink.dataset.number;
+            const linkResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeNumber}/`);
+            const linkData = await linkResponse.json();
+            // console.log(linkData);
+            const p = document.querySelector('p');
             //get singlePokemon and render. 
-            h1.innerText = pokeData.name;
+            p.innerText = JSON.stringify(linkData, null, 2);;
         })
     }
 }
-// use dataset to use attribute
 
+// use init to initalize all crucial functions in order
+const init = async() => {
+    pokeRender(await retrievePokemon());
+    pokeClick();
+}
 
-
-// const getAPokemon = async(link) => {
-//     let response; 
-    
-//     const pokeData = await response.json();
-//     const pokeResults = pokeData.results;
-
-// }
-
+init();
