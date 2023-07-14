@@ -39,13 +39,29 @@ const pokeClick = () => {
             const pokeNumber = pokeLink.dataset.number;
             const linkResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeNumber}/`);
             const linkData = await linkResponse.json();
-            // console.log(linkData);
-            const p = document.querySelector('p');
-            //get singlePokemon and render. 
-            p.innerText = JSON.stringify(linkData, null, 2);;
+            console.log(linkData);
+            console.log(`#${pokeNumber}: ${linkData.name}`);
+            console.log(linkData.sprites.front_default);
+            const newArr = [];
+            (linkData.types).forEach((num) => {
+                newArr.push(num.type.name);
+                
+            })
+            console.log(newArr);
+            // add unique abilities from abilities array
+
+            // const p = document.querySelector('p');
+            // //get singlePokemon and render. 
+            // p.innerText = JSON.stringify(linkData, null, 2);
         })
     }
 }
+
+// const pokeDetails = () => {
+
+// }
+
+
 
 // use init to initalize all crucial functions in order
 const init = async() => {
